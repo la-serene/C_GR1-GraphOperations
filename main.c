@@ -140,21 +140,23 @@ int main() {
     char *TX_data = "..\\graph_data\\roadNet-TX.txt";
 
     Graph g = initGraph();
+
 //    g = importDataFromFile(g, TX);
+
 //    g = importDataFromStructuredFile(g, TX_data);
 
 //    int *visited = (int *) malloc(g._numVertex * sizeof (int));
 //    for (int i = 0; i < g._numVertex; i++) visited[i] = -1;
 
 //    Stack stack = initStack();
-//    Queue queue = initQueue();
-
-//    exportGraphToFile(g, TX_data);
-
 //    DFS(g, 0, stack, visited);
+
+//    Queue queue = initQueue();
 //    BFS(g, 3, queue, visited);
+
 //    isVertexCover(g, TX_test, visited);
 
+//    exportGraphToFile(g, TX_data);
 //    traverseGraph(g, g._numVertex);
 
     /*
