@@ -1,0 +1,13 @@
+.idea/
+cmake-build-debug/
+dataset/roadNet-CA.txt/roadNet-CA.txt
+dataset/roadNet-PA.txt/roadNet-PA.txt
+dataset/roadNet-TX.txt/roadNet-TX.txt
+graph_data/roadNet-CA.txt
+graph_data/roadNet-PA.txt
+graph_data/roadNet-TX.txt
+testset/roadNet-CA.vc
+testset/roadNet-PA.vc
+testset/roadNet-TX.vc
+CMakeLists.txt
+Yeu_Cau_GR1.pdf
