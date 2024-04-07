@@ -11,6 +11,9 @@ node_t initNode(int vertex) {
 }
 
 node_t addNode(node_t root, int vertex) {
+    /*
+     * Add one node to an already initialized node.
+     */
     node_t temp = root;
 
     while (temp->_next != NULL) {
