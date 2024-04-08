@@ -19,7 +19,7 @@ int getValidPosition(Graph graph, int source, int start, int end);
 int findPosition(Graph graph, int source);
 int countValidEdge(Graph graph, int vertex, int **visited);
 void traverseGraph(Graph graph, int maximum);
-void DFS(Graph graph, int source, Stack stack, int *visited);
+void DFS(Graph graph, int source, Stack stack, int *visited, int k);
 void BFS(Graph graph, int source, Queue queue, int *visited);
 void freeGraph(Graph);
 

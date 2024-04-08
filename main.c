@@ -141,15 +141,15 @@ int main() {
 
     Graph g = initGraph();
 
-//    g = importDataFromFile(g, TX);
+//    g = importDataFromFile(g, CA);
 
-    g = importDataFromStructuredFile(g, KY_data);
+    g = importDataFromStructuredFile(g, CA_data);
 
     int *visited = (int *) malloc(g._numVertex * sizeof (int));
     for (int i = 0; i < g._numVertex; i++) visited[i] = -1;
 
-//    Stack stack = initStack();
-//    DFS(g, 0, stack, visited);
+    Stack stack = initStack();
+    DFS(g, 0, stack, visited, 1);
 
 //    Queue queue = initQueue();
 //    BFS(g, 3, queue, visited);

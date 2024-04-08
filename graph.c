@@ -124,9 +124,9 @@ void traverseGraph(Graph graph, int maximum) {
     }
 }
 
-void DFS(Graph graph, int source, Stack stack, int *visited) {
+void DFS(Graph graph, int source, Stack stack, int *visited, int k) {
     int position = findPosition(graph, source);
-    printf("%d ", source);
+    printf("%d %d\n", k, source);
 
     node_t temp = graph._hash[position];
     visited[position] = source;
@@ -146,7 +146,7 @@ void DFS(Graph graph, int source, Stack stack, int *visited) {
     else {
         source = stack->_top->_vertex;
         stack = pop(stack);
-        DFS(graph, source, stack, visited);
+        DFS(graph, source, stack, visited, k + 1);
     }
 }
 
