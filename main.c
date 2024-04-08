@@ -143,10 +143,10 @@ int main() {
 
 //    g = importDataFromFile(g, TX);
 
-//    g = importDataFromStructuredFile(g, TX_data);
+    g = importDataFromStructuredFile(g, KY_data);
 
-//    int *visited = (int *) malloc(g._numVertex * sizeof (int));
-//    for (int i = 0; i < g._numVertex; i++) visited[i] = -1;
+    int *visited = (int *) malloc(g._numVertex * sizeof (int));
+    for (int i = 0; i < g._numVertex; i++) visited[i] = -1;
 
 //    Stack stack = initStack();
 //    DFS(g, 0, stack, visited);
@@ -154,7 +154,7 @@ int main() {
 //    Queue queue = initQueue();
 //    BFS(g, 3, queue, visited);
 
-//    isVertexCover(g, TX_test, visited);
+    isVertexCover(g, KY_test, visited);
 
 //    exportGraphToFile(g, TX_data);
 //    traverseGraph(g, g._numVertex);
@@ -169,7 +169,7 @@ int main() {
     freeGraph(g);
 //    free(stack);
 //    free(queue);
-//    free(visited);
+    free(visited);
 
     return 0;
 }
