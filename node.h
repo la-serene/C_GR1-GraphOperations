@@ -13,6 +13,6 @@ typedef struct node {
 node_t initNode(int vertex);
 node_t addNode(node_t root, int vertex);
 int toString(node_t root);
-void traverseNode(node_t root);
+void traverseNode(node_t root);ut
 
 #endif //GR1_NODE_H
