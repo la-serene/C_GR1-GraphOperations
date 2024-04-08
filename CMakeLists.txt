@@ -5,9 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(GR1 main.c
         main.c
+        graph.c
+        graph.h
         node.c
         node.h
-        graph.c
-        queue.c
-        stack.c
 )
