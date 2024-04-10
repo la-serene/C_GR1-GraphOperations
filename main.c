@@ -198,16 +198,15 @@ int main() {
     Graph g = initVanillaGraph();
 
     // Import data
-    importDataFromFile(&g, PA);
+    importDataFromFile(&g, CA);
     int *nullIndex = getNullIndex(g);
     importOutOfRangeData(&g, nullIndex);
 
 //    g = importDataFromStructuredFile(g, KY_data);
 //    exportGraphToFile(g, CA_data);
-//    traverseGraph(g, g->_numVertex);
+    traverseGraph(g, 10);
 
     DFS(&g, 0);
-
 
 //    free(nullIndex);
 
