@@ -1,25 +1,30 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "graph.h"
+#include "string.h"
+
+#define N_ELEM (20)
+
+int k = 0;
+int *visited = NULL;
+int *stack = NULL;
+//int visited[N_ELEM];
+//int stack[N_ELEM];
+
+int *resetArray(int numElem) {
+    int *ds = (int *) malloc(numElem * sizeof (int));
+    for (int i = 0; i < numElem; i++) ds[i] = -1;
+
+    return ds;
+}
 
 Graph initVanillaGraph() {
     Graph newGraph = (Graph) malloc(sizeof (Graph_s));
     newGraph->_numVertex = 0;
     newGraph->_numUniqueEdge = 0;
-	newGraph->_visited = NULL;
 	newGraph->_hash = NULL;
 
     return newGraph;
-}
-
-void allocateMemoryToVisited(Graph *graph) {
-	Graph tmp = *graph;
-	tmp->_visited = (int *) malloc(tmp->_numVertex * sizeof (int));
-}
-
-void resetVisited(Graph *graph) {
-	Graph tmp = *graph;
-	for (int i = 0; i < tmp->_numVertex; i++) tmp->_visited[i] = -1; 
 }
 
 void allocateMemoryToHashTable(Graph *graph) {
@@ -32,59 +37,58 @@ void resetHashTableToNull(Graph *graph) {
 	for (int i = 0; i < tmp->_numVertex; i++) tmp->_hash[i] = NULL; 
 }
 
-void addEdgeToGraph(Graph *graph, int source, int destination) {
+void addEdgeToGraph(Graph *graph, int source, int destination, int position) {
 	Graph tmp = *graph;
-	if (source >= tmp->_numVertex) {
-		for (int i = tmp->_numVertex - 1; i >= 0; i--) {
-			if (tmp->_hash[i] == NULL) {
-				tmp->_hash[i] = initNode(source);
-				addNode(&tmp->_hash[i], destination);
-				
-				return;
-			}
-			
-			if (tmp->_hash[i]->_vertex == source) {
-				addNode(&tmp->_hash[i], destination);	
-				
-				return;
-			}
-		}
-	}
-	
-	int index = source % tmp->_numVertex;
-	for (int i = index; i < tmp->_numVertex; i++) {
-		if (tmp->_hash[i] == NULL) {
-			tmp->_hash[i] = initNode(source);
-			addNode(&tmp->_hash[i], destination);
-				
-			return;
-		}
-			
-		if (tmp->_hash[i]->_vertex == source) {
-			addNode(&tmp->_hash[i], destination);	
-				
-			return;
-		}	
-	}
-	
-	for (int i = 0; i < index; i++) {
-		if (tmp->_hash[i] == NULL) {
-			tmp->_hash[i] = initNode(source);
-			addNode(&tmp->_hash[i], destination);
-				
-			return;
-		}
-			
-		if (tmp->_hash[i]->_vertex == source) {
-			addNode(&tmp->_hash[i], destination);	
-				
-			return;
-		}	
-	}
+    if (tmp->_hash[position] == NULL) tmp->_hash[position] = initNode(source);
+    addNode(&tmp->_hash[position], destination);
 }
 
 void DFS(Graph *graph, int source) {
+    Graph tmp = *graph;
+    visited = resetArray(tmp->_numVertex);
+    stack = resetArray(tmp->_numVertex);
 
+//    for (int i = 0; i < N_ELEM; i++) visited[i] = -1;
+//    for (int i = 0; i < N_ELEM; i++) stack[i] = -1;
+
+    int numInStack = 0, top = 0;
+
+    stack[top] = source;
+    numInStack = 1;
+
+    int index;
+    node_t adjList;
+    while (numInStack) {
+        numInStack -= 1;
+
+    }
+
+    free(visited);
+    free(stack);
+}
+
+int getOORIndex(int source) {
+    char *pathOORIndex = "I:\\BKA\\nam_ba\\20232\\GR1\\index.txt";
+    FILE *fPtrIndex;
+    char buffer[100];
+    if ((fPtrIndex = fopen(pathOORIndex, "r")) == NULL) {
+        printf("Error opening index file.\n");
+        fprintf(stderr, "Error opening file: %s\n", strerror(errno));
+        return -1;
+    }
+
+    int idx, node_id;
+    while (fgets(buffer, sizeof(buffer), fPtrIndex)) {
+        sscanf(buffer, "%d  %d", &idx, &node_id);
+
+        if (node_id == source) {
+            fclose(fPtrIndex);
+            return idx;
+        }
+    }
+    fclose(fPtrIndex);
+
+    return -1;
 }
 
 void traverseGraph(Graph graph, int maximum) {
@@ -94,10 +98,10 @@ void traverseGraph(Graph graph, int maximum) {
             traverseNode(&graph->_hash[i]);
         }
     }
+    printf("Graph fully traversed!\n");
 }
 
 void freeGraph(Graph graph) {
     for (int i = 0; i < graph->_numVertex; i++) free(graph->_hash[i]);
-	free(graph->_visited);
 	free(graph->_hash);
 }

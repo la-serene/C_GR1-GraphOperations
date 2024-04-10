@@ -24,13 +24,13 @@ void addNode(node_t *root, int vertex) {
 void traverseNode(node_t *root) {
     node_t tmp = *root;
     if (tmp != NULL) {
-//        printf("%d", tmp->_vertex);
+        printf("%d", tmp->_vertex);
 
         while (tmp->_next != NULL) {
             tmp = tmp->_next;
-//            printf(" -> %d", tmp->_vertex);
+            printf(" -> %d", tmp->_vertex);
         }
 
-//        printf("\n");
+        printf("\n");
     }
 }
