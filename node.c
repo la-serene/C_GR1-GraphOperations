@@ -3,40 +3,32 @@
 #include "node.h"
 
 node_t initNode(int vertex) {
-    node_t newNode = (node_t) malloc(sizeof(node_s));
+    node_t newNode = malloc(sizeof (node_s));
     newNode->_vertex = vertex;
     newNode->_next = NULL;
 
     return newNode;
 }
 
-node_t addNode(node_t root, int vertex) {
-    /*
-     * Add one node to an already initialized node.
-     */
-    node_t temp = root;
-
-    while (temp->_next != NULL) {
-        temp = temp->_next;
+void addNode(node_t *root, int vertex) {
+    if (*root == NULL) *root = initNode(vertex);
+    else {
+        node_t tmp = *root;
+        while (tmp->_next != NULL) {
+            tmp = tmp->_next;
+        }
+        tmp->_next = initNode(vertex);
     }
-
-    temp->_next = initNode(vertex);
-
-    return root;
 }
 
-int toString(node_t root) {
-    if (root == NULL) return -1;
-    else return root->_vertex;
-}
+void traverseNode(node_t *root) {
+    node_t tmp = *root;
+    if (tmp != NULL) {
+        printf("%d", tmp->_vertex);
 
-void traverseNode(node_t root) {
-    if (root != NULL) {
-        printf("%d", toString(root));
-
-        while (root->_next != NULL) {
-            root = root->_next;
-            printf(" -> %d", root->_vertex);
+        while (tmp->_next != NULL) {
+            tmp = tmp->_next;
+            printf(" -> %d", tmp->_vertex);
         }
 
         printf("\n");

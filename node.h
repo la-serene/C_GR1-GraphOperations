@@ -11,8 +11,7 @@ typedef struct node {
 } *node_t, node_s;
 
 node_t initNode(int vertex);
-node_t addNode(node_t root, int vertex);
-int toString(node_t root);
-void traverseNode(node_t root);
+void addNode(node_t *root, int vertex);
+void traverseNode(node_t *root);
 
 #endif //GR1_NODE_H

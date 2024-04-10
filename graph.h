@@ -2,25 +2,19 @@
 #define GR1_GRAPH_H
 
 #include "node.h"
-#include "queue.h"
-#include "stack.h"
 
 typedef struct Graph {
     int _numVertex;
     int _numUniqueEdge;
     node_t *_hash;
-} Graph;
+} *Graph, Graph_s;
 
-Graph initGraph();
-Graph assignMemoryToGraph(Graph graph);
-Graph resetHashTableToNull(Graph graph);
-Graph addEdgeToGraph(Graph graph, int source, int destination);
-int getValidPosition(Graph graph, int source, int start, int end);
-int findPosition(Graph graph, int source);
-int countValidEdge(Graph graph, int vertex, int **visited);
+Graph initVanillaGraph();
+void allocateMemoryToHashTable(Graph *graph);
+void resetHashTableToNull(Graph *graph);
+void addEdgeToGraph(Graph *graph, int source, int destination, int position);
+void DFS(Graph *graph, int source);
+int getOORIndex(int source);
 void traverseGraph(Graph graph, int maximum);
-void DFS(Graph graph, int source, Stack stack, int *visited);
-void BFS(Graph graph, int source, Queue queue, int *visited);
-void freeGraph(Graph);
-
+void freeGraph(Graph graph);
 #endif //GR1_GRAPH_H
