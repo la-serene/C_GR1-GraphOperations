@@ -3,13 +3,15 @@
 #include "graph.h"
 #include "string.h"
 
-#define N_ELEM (20)
+#define N_ELEM (5)
 
 int k = 0;
 int *visited = NULL;
 int *stack = NULL;
+int *waiting = NULL;
 //int visited[N_ELEM];
 //int stack[N_ELEM];
+//int waiting[N_ELEM];
 
 int *resetArray(int numElem) {
     int *ds = (int *) malloc(numElem * sizeof (int));
@@ -47,9 +49,11 @@ void DFS(Graph *graph, int source) {
     Graph tmp = *graph;
     visited = resetArray(tmp->_numVertex);
     stack = resetArray(tmp->_numVertex);
+    waiting = resetArray(tmp->_numVertex);
 
 //    for (int i = 0; i < N_ELEM; i++) visited[i] = -1;
 //    for (int i = 0; i < N_ELEM; i++) stack[i] = -1;
+//    for (int i = 0; i < N_ELEM; i++) waiting[i] = -1;
 
     int numInStack = 0, top = 0;
 
@@ -60,11 +64,46 @@ void DFS(Graph *graph, int source) {
     node_t adjList;
     while (numInStack) {
         numInStack -= 1;
+        top = (top == 0) ? 0 : top - 1;
+        source = stack[top];
+        index = (source < tmp->_numVertex) ? source : getOORIndex(source);
+        adjList = tmp->_hash[index];
+        visited[index] = 1;
+        k += 1;
+        if (k % 10000 == 0) printf("%d %d\n", k, source);
+
+        if (adjList == NULL) {
+            top = (top == 0) ? 0 : top - 1;
+            source = stack[top];
+            continue;
+        }
+
+        if (adjList->_next == NULL) {
+            top = (top == 0) ? 0 : top - 1;
+            source = stack[top];
+        }
+
+        while (adjList->_next != NULL) {
+            adjList = adjList->_next;
+            source = adjList->_vertex;
+            index = (source < tmp->_numVertex) ? source : getOORIndex(source);
+
+            if (visited[index] == 1 || waiting[index] == 1) {
+                continue;
+            }
+
+            stack[top] = source;
+            waiting[index] = 1;
+            top += 1;
+            numInStack += 1;
+        }
+
 
     }
 
     free(visited);
     free(stack);
+    free(waiting);
 }
 
 int getOORIndex(int source) {
