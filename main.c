@@ -50,7 +50,7 @@ void importDataFromFile(Graph *_graph, char *path) {
     }
 
     // In C, if buffer is not fulled, data will be cached until the end of program to decrease the I/O on disk
-    // Therefore, call fflush to ensure that all data from fPtrPairs is ready for indexing step.
+    // Therefore, call fflush to ensure that all data from fPtrPairs is written in index.txt for indexing step.
     fflush(fPtrPairs);
     printf("Successfully load data from raw file.\n");
     fclose(fPtr);
@@ -59,7 +59,7 @@ void importDataFromFile(Graph *_graph, char *path) {
 
 int *getNullIndex(Graph graph) {
     int track = 0;
-    int *nullIndex = (int *) malloc(numOutOfRange * sizeof (int));
+    int *nullIndex = (int *) malloc(numOutOfRange * sizeof(int));
 
     for (int i = 0; i < graph->_numVertex; i++) {
         if (graph->_hash[i] == NULL) {
@@ -152,31 +152,31 @@ void exportGraphToFile(Graph graph, char *filename) {
     printf("Successfully export all graph data to file.\n");
 }
 
-Graph importDataFromStructuredFile(Graph graph, char *path) {
-    FILE *fPtr;
+void print_state_menu() {
+    printf("\nChoose a dataset:\n");
+    printf("1. CA\n");
+    printf("2. PA\n");
+    printf("3. TX\n");
+    printf("0. Exit\n");
+}
 
-    if ((fPtr = fopen(path, "r")) == NULL) {
-        printf("Error opening file.");
-        return graph;
+void print_option_menu() {
+    printf("\nChoose an operation:\n");
+    printf("1. DFS\n");
+    printf("2. BFS\n");
+    printf("3. Check Vertex Cover\n");
+    printf("4. Traverse Graph\n");
+    printf("0. Back to State Menu\n");
+}
+
+int isValidVertex(Graph *graph, int vertex) {
+    Graph tmp = *graph;
+
+    for (int i = 0; i < tmp->_numVertex; i++) {
+        if (tmp->_hash[i]->_vertex == vertex) return 1;
     }
 
-    char buffer[1000];
-    fgets(buffer, sizeof(buffer), fPtr);
-    sscanf(buffer, "%d %d", &graph->_numVertex, &graph->_numUniqueEdge);
-    allocateMemoryToHashTable(&graph);
-    resetHashTableToNull(&graph);
-
-    int position, vertex, next;
-    while (fgets(buffer, sizeof(buffer), fPtr)) {
-        sscanf(buffer, "%d %d %d", &position, &vertex, &next);
-
-        if (graph->_hash[position] == NULL) graph->_hash[position] = initNode(vertex);
-        addNode(&graph->_hash[position], next);
-    }
-    fclose(fPtr);
-    printf("Successfully import all data from structured file\n");
-
-    return graph;
+    return 0;
 }
 
 int main() {
@@ -195,20 +195,90 @@ int main() {
     char *PA_data = "..\\graph_data\\roadNet-PA.txt";
     char *TX_data = "..\\graph_data\\roadNet-TX.txt";
 
-    Graph g = initVanillaGraph();
+    int option, isBreak = 0;
+    while (1) {
+        Graph g = initVanillaGraph();
 
-    // Import data
-    importDataFromFile(&g, CA);
-    int *nullIndex = getNullIndex(g);
-    importOutOfRangeData(&g, nullIndex);
+        print_state_menu();
+        printf("Enter your choice (0 to exit): ");
+        scanf("%d", &option);
 
-//    g = importDataFromStructuredFile(g, KY_data);
-//    exportGraphToFile(g, CA_data);
-    traverseGraph(g, 10);
+        switch (option) {
+            case 1:
+                importDataFromFile(&g, CA);
+                break;
+            case 2:
+                importDataFromFile(&g, PA);
+                break;
+            case 3:
+                importDataFromFile(&g, TX);
+                break;
+            case 4:
+                importDataFromFile(&g, KY);
+                break;
+            case 0:
+                isBreak = 1;
+                break;
+            default:
+                printf("Invalid option.\n");
+        }
 
-    DFS(&g, 0);
+        if (isBreak) break;
 
-//    free(nullIndex);
+        // Case if user didn't press 0
+        int *nullIndex = getNullIndex(g);
+        importOutOfRangeData(&g, nullIndex);
+
+        // Operation Menu
+        while(1) {
+            print_option_menu();
+            printf("Enter your choice (0 to exit): ");
+            scanf("%d", &option);
+
+            switch (option) {
+                case 1:
+                    printf("\n========Performing DFS========\n");
+                    printf("Enter starting vertex:");
+                    scanf("%d", &option);
+
+                    if (isValidVertex(&g, option)) DFS(&g, option);
+                    else printf("Invalid vertex");
+
+                    break;
+                case 2:
+                    printf("\n========Performing BFS========\n");
+                    printf("Enter starting vertex: ");
+                    scanf("%d", &option);
+
+                    if (isValidVertex(&g, option)) BFS(&g, option);
+                    else printf("Invalid vertex");
+
+                    break;
+                case 3:
+                    printf("\n========Checking Vertex Cover========\n");
+                    break;
+                case 4:
+                    printf("\n========Traversing the graph========\n");
+                    printf("Enter number of node traversed: (if 0, print all node)");
+                    scanf("%d", &option);
+
+                    if (option == 0) option = g->_numVertex;
+                    traverseGraph(g, option);
+
+                    break;
+                case 0:
+                    isBreak = 1;
+                default:
+                    printf("Invalid option.\n");
+            }
+            if (isBreak) break;
+        }
+
+        isBreak = 0;
+
+        freeGraph(g);
+        free(nullIndex);
+    }
 
     return 0;
 }
