@@ -3,21 +3,16 @@
 #include "graph.h"
 #include "string.h"
 
-#define N_ELEM (5)
-
 int k = 0;
 int *visited = NULL;
-int *stack = NULL;
+int *ds = NULL;
 int *waiting = NULL;
-//int visited[N_ELEM];
-//int stack[N_ELEM];
-//int waiting[N_ELEM];
 
 int *resetArray(int numElem) {
-    int *ds = (int *) malloc(numElem * sizeof (int));
-    for (int i = 0; i < numElem; i++) ds[i] = -1;
+    int *data_structure = (int *) malloc(numElem * sizeof (int));
+    for (int i = 0; i < numElem; i++) data_structure[i] = -1;
 
-    return ds;
+    return data_structure;
 }
 
 Graph initVanillaGraph() {
@@ -48,13 +43,10 @@ void addEdgeToGraph(Graph *graph, int source, int destination, int position) {
 void DFS(Graph *graph, int source) {
     Graph tmp = *graph;
     visited = resetArray(tmp->_numVertex);
-    stack = resetArray(tmp->_numVertex);
+    ds = resetArray(tmp->_numVertex);
     waiting = resetArray(tmp->_numVertex);
 
-//    for (int i = 0; i < N_ELEM; i++) visited[i] = -1;
-//    for (int i = 0; i < N_ELEM; i++) stack[i] = -1;
-//    for (int i = 0; i < N_ELEM; i++) waiting[i] = -1;
-
+    int *stack = ds;
     int numInStack = 0, top = 0;
 
     stack[top] = source;
@@ -70,20 +62,9 @@ void DFS(Graph *graph, int source) {
         adjList = tmp->_hash[index];
         visited[index] = 1;
         k += 1;
-        if (k % 10000 == 0) printf("%d %d\n", k, source);
+        if (k % 100000 == 0) printf("%d %d\n", k, source);
 
-        if (adjList == NULL) {
-            top = (top == 0) ? 0 : top - 1;
-            source = stack[top];
-            continue;
-        }
-
-        if (adjList->_next == NULL) {
-            top = (top == 0) ? 0 : top - 1;
-            source = stack[top];
-        }
-
-        while (adjList->_next != NULL) {
+        while (adjList->_next != NULL || adjList->_next != NULL) {
             adjList = adjList->_next;
             source = adjList->_vertex;
             index = (source < tmp->_numVertex) ? source : getOORIndex(source);
@@ -97,12 +78,54 @@ void DFS(Graph *graph, int source) {
             top += 1;
             numInStack += 1;
         }
-
-
     }
 
     free(visited);
     free(stack);
+    free(waiting);
+}
+
+void BFS(Graph *graph, int source) {
+    Graph tmp = *graph;
+    visited = resetArray(tmp->_numVertex);
+    ds = resetArray(tmp->_numVertex);
+    waiting = resetArray(tmp->_numVertex);
+
+    int *queue = ds;
+    int numInQueue = 0, front = 0, rear = 0;
+    int index;
+    node_t adjList;
+
+    numInQueue = 1;
+    queue[front] = source;
+    while (numInQueue) {
+        numInQueue -= 1;
+        source = queue[front];
+        front += 1;
+        index = (source < tmp->_numVertex) ? source : getOORIndex(source);
+        adjList = tmp->_hash[index];
+        visited[index] = 1;
+        k += 1;
+        if (k % 100000 == 0) printf("%d %d\n", k, source);
+
+        while (adjList->_next != NULL || adjList->_next != NULL) {
+            adjList = adjList->_next;
+            source = adjList->_vertex;
+            index = (source < tmp->_numVertex) ? source : getOORIndex(source);
+
+            if (visited[index] == 1 || waiting[index] == 1) {
+                continue;
+            }
+
+            rear += 1;
+            queue[rear] = source;
+            waiting[index] = 1;
+            numInQueue += 1;
+        }
+    }
+
+    free(visited);
+    free(queue);
     free(waiting);
 }
 
