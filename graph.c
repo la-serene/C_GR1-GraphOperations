@@ -62,7 +62,7 @@ void DFS(Graph *graph, int source) {
         adjList = tmp->_hash[index];
         visited[index] = 1;
         k += 1;
-        if (k % 100000 == 0) printf("%d %d\n", k, source);
+        printf("%d %d\n", k, source);
 
         while (adjList->_next != NULL || adjList->_next != NULL) {
             adjList = adjList->_next;
@@ -106,7 +106,7 @@ void BFS(Graph *graph, int source) {
         adjList = tmp->_hash[index];
         visited[index] = 1;
         k += 1;
-        if (k % 100000 == 0) printf("%d %d\n", k, source);
+        printf("%d %d\n", k, source);
 
         while (adjList->_next != NULL || adjList->_next != NULL) {
             adjList = adjList->_next;
@@ -142,11 +142,7 @@ int getOORIndex(int source) {
     int idx, node_id;
     while (fgets(buffer, sizeof(buffer), fPtrIndex)) {
         sscanf(buffer, "%d  %d", &idx, &node_id);
-
-        if (node_id == source) {
-            fclose(fPtrIndex);
-            return idx;
-        }
+        if (node_id == source) return idx;
     }
     fclose(fPtrIndex);
 
