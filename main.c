@@ -124,6 +124,80 @@ void importOutOfRangeData(Graph *graph, int *nullIndex) {
     fclose(fPtrIndex);
 }
 
+int isValidVertex(Graph *graph, int vertex) {
+    Graph tmp = *graph;
+
+    for (int i = 0; i < tmp->_numVertex; i++) {
+        if (tmp->_hash[i]->_vertex == vertex) return 1;
+    }
+
+    return 0;
+}
+
+void testVertexCover(Graph *graph, char *path) {
+    Graph tmp = *graph;
+    FILE *fPtr, *fPtr_missing_edges;
+    char buffer[1000];
+    int num_VC = 0;
+
+    if ((fPtr = fopen(path, "r")) == NULL) {
+        printf("Error opening file.");
+        return;
+    }
+
+    char *missing_edges_path = "I:\\BKA\\nam_ba\\20232\\GR1\\missing_edges.txt";
+    if ((fPtr_missing_edges = fopen(missing_edges_path, "w")) == NULL) {
+        printf("Error opening file.");
+        return;
+    }
+
+    if ((fPtr_missing_edges = fopen(missing_edges_path, "a")) == NULL) {
+        printf("Error opening file.");
+        return;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        fgets(buffer, sizeof(buffer), fPtr);
+        if (!num_VC) {
+            sscanf(buffer, "VC %d", &num_VC);
+        }
+    }
+
+    int *inVertexCover = (int *) malloc(tmp->_numVertex * sizeof (int));
+    int vertex, index;
+    int isVertexCover = 1;
+    while (fgets(buffer, sizeof(buffer), fPtr)) {
+        sscanf(buffer, "v %d", &vertex);
+
+        index = (vertex < tmp->_numVertex) ? vertex : getOORIndex(vertex);
+        inVertexCover[index] = 1;
+    }
+
+    int destination;
+    for (int i = 0; i < tmp->_numVertex; i++) {
+        if (inVertexCover[i] == 1) continue;
+
+        vertex = tmp->_hash[i]->_vertex;
+        for (node_t j = tmp->_hash[i]->_next; j != NULL; j = j->_next) {
+            destination = j->_vertex;
+            index = (destination < tmp->_numVertex) ? destination : getOORIndex(destination);
+
+            if (inVertexCover[index] == 1) continue;
+            else {
+                isVertexCover = 0;
+                fprintf(fPtr_missing_edges, "%d %d\n", vertex, destination);
+            }
+        }
+    }
+
+    if (isVertexCover) printf("The given set is vertex cover.\n");
+    else printf("The given set is not vertex cover.\n");
+
+    free(inVertexCover);
+    fclose(fPtr);
+    fclose(fPtr_missing_edges);
+}
+
 void print_state_menu() {
     printf("\nChoose a dataset:\n");
     printf("1. CA\n");
@@ -141,16 +215,6 @@ void print_option_menu() {
     printf("0. Back to State Menu\n");
 }
 
-int isValidVertex(Graph *graph, int vertex) {
-    Graph tmp = *graph;
-
-    for (int i = 0; i < tmp->_numVertex; i++) {
-        if (tmp->_hash[i]->_vertex == vertex) return 1;
-    }
-
-    return 0;
-}
-
 int main() {
     char *KY = "..\\dataset\\roadNet-KY.txt\\roadNet-KY.txt";       // Simple graph data for testing
     char *CA = "..\\dataset\\roadNet-CA.txt\\roadNet-CA.txt";
@@ -165,6 +229,7 @@ int main() {
     int option, isBreak = 0;
     while (1) {
         Graph g = initVanillaGraph();
+        char *test_path;
 
         print_state_menu();
         printf("Enter your choice (0 to exit): ");
@@ -173,15 +238,19 @@ int main() {
         switch (option) {
             case 1:
                 importDataFromFile(&g, CA);
+                test_path = CA_test;
                 break;
             case 2:
                 importDataFromFile(&g, PA);
+                test_path = PA_test;
                 break;
             case 3:
                 importDataFromFile(&g, TX);
+                test_path = TX_test;
                 break;
             case 4:
                 importDataFromFile(&g, KY);
+                test_path = KY_test;
                 break;
             case 0:
                 isBreak = 1;
@@ -223,6 +292,7 @@ int main() {
                     break;
                 case 3:
                     printf("\n========Checking Vertex Cover========\n");
+                    testVertexCover(&g, test_path);
                     break;
                 case 4:
                     printf("\n========Traversing the graph========\n");
