@@ -41,6 +41,7 @@ void addEdgeToGraph(Graph *graph, int source, int destination, int position) {
 }
 
 void DFS(Graph *graph, int source) {
+    k = 0;
     Graph tmp = *graph;
     visited = resetArray(tmp->_numVertex);
     ds = resetArray(tmp->_numVertex);
@@ -86,6 +87,7 @@ void DFS(Graph *graph, int source) {
 }
 
 void BFS(Graph *graph, int source) {
+    k = 0;
     Graph tmp = *graph;
     visited = resetArray(tmp->_numVertex);
     ds = resetArray(tmp->_numVertex);
