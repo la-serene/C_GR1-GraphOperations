@@ -24,3 +24,11 @@ Here are the table demonstrating the result of the vertex cover test on CA, PA a
 | CA       | Yes              |
 | PA       | Yes              |
 | TX       | Yes              |
+
+## Solution
+As the size of graph is very huge, the appropriate approach for a successful DFS and BFS is using array-based
+implementation of stack, queue combined with a loop to reduce memory overhead and fast access time compared to
+recursion-based implementation or linked-list-based data structures.
+
+In the vertex cover test, given testing vertex cover set S, we keep track of vertices that are not in S, then perform
+edge validation.
