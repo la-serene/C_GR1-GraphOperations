@@ -8,7 +8,7 @@ There are two ways to import data to graph: importing from raw file and importin
 file acquires more time for graph to fully ingest the whole data.
 
 ## Dataset
-The dataset is taken from [SNAP Graph Library](http://snap.stanford.edu/data/index.html), which are roadNet-CA, roadNetPA
+The dataset is downloaded from [SNAP Graph Library](http://snap.stanford.edu/data/index.html), which are roadNet-CA, roadNetPA
 and roadNet-TX undirected graph dataset. Each may contain up to nearly 2M vertices and 5M edges.
 
 Due to the size of the dataset, Adjacency List is chosen to represent graph in C.
@@ -22,5 +22,5 @@ Here are the table demonstrating the result of the vertex cover test on CA, PA a
 | Test set | Is Vertex Cover? |
 |----------|------------------|
 | CA       | Yes              |
-| PA       | No               |
+| PA       | Yes              |
 | TX       | Yes              |
