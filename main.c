@@ -305,6 +305,7 @@ int main() {
                     break;
                 case 0:
                     isBreak = 1;
+                    break;
                 default:
                     printf("Invalid option.\n");
             }
