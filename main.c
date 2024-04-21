@@ -190,11 +190,6 @@ int main() {
     char *PA_test = "..\\testset\\roadNet-PA.vc";
     char *TX_test = "..\\testset\\roadNet-TX.vc";
 
-    char *KY_data = "..\\graph_data\\roadNet-KY.txt";
-    char *CA_data = "..\\graph_data\\roadNet-CA.txt";
-    char *PA_data = "..\\graph_data\\roadNet-PA.txt";
-    char *TX_data = "..\\graph_data\\roadNet-TX.txt";
-
     int option, isBreak = 0;
     while (1) {
         Graph g = initVanillaGraph();
