@@ -124,34 +124,6 @@ void importOutOfRangeData(Graph *graph, int *nullIndex) {
     fclose(fPtrIndex);
 }
 
-void exportGraphToFile(Graph graph, char *filename) {
-    FILE *fPtr;
-
-    if ((fPtr = fopen(filename, "w")) == NULL) {
-        printf("Error opening file.");
-        return;
-    }
-
-    fprintf(fPtr, "%d %d\n", graph->_numVertex, graph->_numUniqueEdge);
-
-    int vertex;
-    for (int i = 0; i < graph->_numVertex; i++) {
-        if (graph->_hash[i] == NULL) {
-            fprintf(fPtr, "%d\n", i);
-            continue;
-        }
-
-        node_t temp = graph->_hash[i];
-        vertex = temp->_vertex;
-        while (temp->_next != NULL) {
-            fprintf(fPtr, "%d %d %d\n", i, vertex, temp->_next->_vertex);
-            temp = temp->_next;
-        }
-    }
-    fclose(fPtr);
-    printf("Successfully export all graph data to file.\n");
-}
-
 void print_state_menu() {
     printf("\nChoose a dataset:\n");
     printf("1. CA\n");
