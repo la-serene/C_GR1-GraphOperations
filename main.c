@@ -8,7 +8,7 @@ void importDataFromFile(Graph *_graph, char *path) {
     Graph graph = *_graph;
     FILE *fPtr, *fPtrPairs;
     char buffer[100];
-    char *pathPairs = "I:\\BKA\\nam_ba\\20232\\GR1\\pairs.txt";
+    char *pathPairs = "..\\pairs.txt";
 
     if ((fPtr = fopen(path, "r")) == NULL) {
         printf("Error opening file.");
@@ -72,7 +72,7 @@ int *getNullIndex(Graph graph) {
 }
 
 void importOutOfRangeData(Graph *graph, int *nullIndex) {
-    char *pathPairs = "I:\\BKA\\nam_ba\\20232\\GR1\\pairs.txt";
+    char *pathPairs = "..\\pairs.txt";
     FILE *fPtr;
     if ((fPtr = fopen(pathPairs, "r")) == NULL) {
         printf("Error opening file.");
@@ -80,7 +80,7 @@ void importOutOfRangeData(Graph *graph, int *nullIndex) {
         return;
     }
 
-    char *pathOORIndex = "I:\\BKA\\nam_ba\\20232\\GR1\\index.txt";
+    char *pathOORIndex = "..\\index.txt";
     FILE *fPtrIndex;
     if ((fPtrIndex = fopen(pathOORIndex, "w")) == NULL) {
         printf("Error opening file.");
@@ -140,17 +140,20 @@ void testVertexCover(Graph *graph, char *path) {
     char buffer[1000];
     int num_VC = 0;
 
+    // Check test file path
     if ((fPtr = fopen(path, "r")) == NULL) {
         printf("Error opening file.");
         return;
     }
 
+    // Make empty missing_edges file
     char *missing_edges_path = "I:\\BKA\\nam_ba\\20232\\GR1\\missing_edges.txt";
     if ((fPtr_missing_edges = fopen(missing_edges_path, "w")) == NULL) {
         printf("Error opening file.");
         return;
     }
 
+    // Open file for writing missing edges
     if ((fPtr_missing_edges = fopen(missing_edges_path, "a")) == NULL) {
         printf("Error opening file.");
         return;
@@ -162,6 +165,7 @@ void testVertexCover(Graph *graph, char *path) {
             sscanf(buffer, "VC %d", &num_VC);
         }
     }
+
 
     int *inVertexCover = (int *) malloc(tmp->_numVertex * sizeof (int));
     int vertex, index;
