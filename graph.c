@@ -9,33 +9,33 @@ int *ds = NULL;
 int *waiting = NULL;
 
 int *resetArray(int numElem) {
-    int *data_structure = (int *) malloc(numElem * sizeof (int));
+    int *data_structure = (int *) malloc(numElem * sizeof(int));
     for (int i = 0; i < numElem; i++) data_structure[i] = -1;
 
     return data_structure;
 }
 
 Graph initVanillaGraph() {
-    Graph newGraph = (Graph) malloc(sizeof (Graph_s));
+    Graph newGraph = (Graph) malloc(sizeof(Graph_s));
     newGraph->_numVertex = 0;
     newGraph->_numUniqueEdge = 0;
-	newGraph->_hash = NULL;
+    newGraph->_hash = NULL;
 
     return newGraph;
 }
 
 void allocateMemoryToHashTable(Graph *graph) {
-	Graph tmp = *graph;
-	tmp->_hash = (node_t *) malloc(tmp->_numVertex * sizeof (node_t));
+    Graph tmp = *graph;
+    tmp->_hash = (node_t *) malloc(tmp->_numVertex * sizeof(node_t));
 }
 
 void resetHashTableToNull(Graph *graph) {
-	Graph tmp = *graph;
-	for (int i = 0; i < tmp->_numVertex; i++) tmp->_hash[i] = NULL; 
+    Graph tmp = *graph;
+    for (int i = 0; i < tmp->_numVertex; i++) tmp->_hash[i] = NULL;
 }
 
 void addEdgeToGraph(Graph *graph, int source, int destination, int position) {
-	Graph tmp = *graph;
+    Graph tmp = *graph;
     if (tmp->_hash[position] == NULL) tmp->_hash[position] = initNode(source);
     addNode(&tmp->_hash[position], destination);
 }
@@ -80,7 +80,7 @@ void DFS(Graph *graph, int source) {
             numInStack += 1;
         }
     }
-
+    printf("k: %d\n", k);
     free(visited);
     free(stack);
     free(waiting);
@@ -126,6 +126,7 @@ void BFS(Graph *graph, int source) {
         }
     }
 
+    printf("k: %d\n", k);
     free(visited);
     free(queue);
     free(waiting);
@@ -166,5 +167,5 @@ void traverseGraph(Graph graph, int maximum) {
 
 void freeGraph(Graph graph) {
     for (int i = 0; i < graph->_numVertex; i++) free(graph->_hash[i]);
-	free(graph->_hash);
+    free(graph->_hash);
 }
