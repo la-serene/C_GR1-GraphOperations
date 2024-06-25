@@ -25,7 +25,7 @@ Here are the table demonstrating the result of the vertex cover test on CA, PA a
 | PA       | Yes              |
 | TX       | Yes              |
 
-## Solution
+## Implementation
 As the size of graph is very huge, the appropriate approach for a successful DFS and BFS is using array-based
 implementation of stack, queue combined with a loop to reduce memory overhead and fast access time compared to
 recursion-based implementation or linked-list-based data structures.
